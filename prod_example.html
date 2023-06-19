@@ -5,9 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<meta name="description" content="Amazon Relational Database Service for PostgreSQL Deployment Guide on AWS">
-<meta name="keywords" content="Partner Solution, AWS, Amazon Relational Database Service for PostgreSQL">
-<title>Amazon Relational Database Service for PostgreSQL on AWS</title>
+<meta name="description" content="Amazon RDS Deployment Guide on AWS">
+<meta name="keywords" content="Partner Solution, AWS, Amazon RDS">
+<title>Amazon RDS on AWS</title>
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
 /* Uncomment @import statement to use as custom stylesheet */
@@ -871,7 +871,7 @@ p.footer-text a{color:#d7d8d8}
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<h2 id="_amazon_relational_database_service_for_postgresql_on_aws" class="discrete text-center">Amazon Relational Database Service for PostgreSQL on AWS</h2>
+<h2 id="_amazon_rds_on_aws" class="discrete text-center">Amazon RDS on AWS</h2>
 <h2 id="_partner_solution_deployment_guide" class="discrete text-left text-center">Partner Solution Deployment Guide</h2>
 <div class="imageblock text-center">
 <div class="content">
@@ -879,13 +879,13 @@ p.footer-text a{color:#d7d8d8}
 </div>
 </div>
 <div class="paragraph text-center">
-<p><strong>December 2022</strong><br>
+<p><strong>June 2023</strong><br>
 <em>Sudhir Gupta, AWS Databases &amp; Analytics team, and Battulga Purevragchaa, AWS ISV Workload Migration program</em><br>
-<em>Troy Lindsay and Andrew Gargan, AWS Integration &amp; Automation team</em><br></p>
+<em>Troy Lindsay, Andrew Gargan, Vinod Shukla, and Dave May, AWS Integration &amp; Automation team</em><br></p>
 </div>
 <div class="imageblock text-left image-container">
 <div class="content">
-<img src="https://aws-quickstart.s3.amazonaws.com/quickstart-amazon-rds-postgres/docs/boilerplate/.images/aws-quickstart-graphic.png" alt="">
+<img src="https://aws-quickstart.s3.amazonaws.com/quickstart-amazon-rds/docs/boilerplate/.images/aws-quickstart-graphic.png" alt="">
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -895,7 +895,7 @@ p.footer-text a{color:#d7d8d8}
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Refer to the <a href="https://github.com/aws-quickstart/quickstart-amazon-rds-postgres" target="_blank" rel="noopener">GitHub repository</a> to view source files, report bugs, submit feature ideas, and post feedback about this Partner Solution. To comment on the documentation, refer to <a href="#_feedback">Feedback</a>.
+Refer to the <a href="https://github.com/aws-quickstart/quickstart-amazon-rds" target="_blank" rel="noopener">GitHub repository</a> to view source files, report bugs, submit feature ideas, and post feedback about this Partner Solution. To comment on the documentation, refer to <a href="#_feedback">Feedback</a>.
 </td>
 </tr>
 </table>
@@ -909,10 +909,10 @@ Refer to the <a href="https://github.com/aws-quickstart/quickstart-amazon-rds-po
 <h2 id="_overview">Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This guide covers the information you need to deploy Amazon Relational Database Service (Amazon RDS) for PostgreSQL in the AWS Cloud.</p>
+<p>This guide covers the information you need to deploy Amazon Relational Database Service (Amazon RDS) in the AWS Cloud.</p>
 </div>
 <div class="paragraph">
-<p>The solution deploys a Amazon RDS for PostgreSQL cluster in a private subnet with an Amazon RDS read replica in one Availability Zone and a write replica in another zone. Native replication mechanisms available with PostgreSQL keep the read replica in sync with the source database. The deployment also includes access to Amazon CloudWatch metrics and logs, event notifications, and data encryption.</p>
+<p>The solution deploys a Amazon RDS cluster in a private subnet with an Amazon RDS read replica in one Availability Zone and a write replica in another zone. Native replication mechanisms available with the database engine keep the read replica in sync with the source database. The deployment also includes access to Amazon CloudWatch metrics and logs, event notifications, and data encryption.</p>
 </div>
 </div>
 </div>
@@ -928,13 +928,13 @@ Refer to the <a href="https://github.com/aws-quickstart/quickstart-amazon-rds-po
 <h2 id="_architecture">Architecture</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Deploying this Partner Solution with default parameters builds the following Amazon RDS for PostgreSQL environment in the AWS Cloud.</p>
+<p>Deploying this Partner Solution with default parameters builds the following Amazon RDS environment in the AWS Cloud.</p>
 </div>
 <div id="architecture1" class="imageblock">
 <div class="content">
-<img src="docs/deployment_guide/images/amazon-rds-postgres-architecture-diagram.png" alt="Architecture">
+<img src="docs/deployment_guide/images/amazon-rds-architecture-diagram.png" alt="Architecture">
 </div>
-<div class="title">Figure 1. Partner Solution architecture for Amazon RDS for PostgreSQL on AWS</div>
+<div class="title">Figure 1. Partner Solution architecture for Amazon RDS on AWS</div>
 </div>
 <div class="paragraph">
 <p>As shown in <a href="#architecture1">Figure 1</a>, this solution sets up the following:</p>
@@ -965,7 +965,7 @@ Refer to the <a href="https://github.com/aws-quickstart/quickstart-amazon-rds-po
 <div class="ulist">
 <ul>
 <li>
-<p>An Amazon RDS for PostgreSQL cluster that includes a write replica in one Availability Zone and a read replica in the other.</p>
+<p>An Amazon RDS cluster that includes a write replica in one Availability Zone and a read replica in the other.</p>
 </li>
 </ul>
 </div>
@@ -995,31 +995,40 @@ Refer to the <a href="https://github.com/aws-quickstart/quickstart-amazon-rds-po
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://fwd.aws/jm4dy?" target="_blank" rel="noopener">Deploy Amazon RDS for PostgreSQL into a new VPC</a>. This option builds a new AWS environment that consists of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. It then deploys Amazon RDS for PostgreSQL into this new VPC.</p>
+<p><a href="https://fwd.aws/jm4dy?">Deploy Amazon RDS for PostgreSQL into a new VPC</a>. This option builds a new AWS environment that consists of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. It then deploys Amazon RDS for PostgreSQL into this new VPC.</p>
 </li>
 <li>
-<p><a href="https://fwd.aws/verbW?" target="_blank" rel="noopener">Deploy Amazon RDS for PostgreSQL into an existing VPC</a>. This option provisions Amazon RDS for PostgreSQL in your existing AWS infrastructure.</p>
+<p><a href="https://fwd.aws/verbW?">Deploy Amazon RDS for PostgreSQL into an existing VPC</a>. This option provisions Amazon RDS for PostgreSQL in your existing AWS infrastructure.</p>
+</li>
+<li>
+<p><a href="https://fwd.aws/kPKED?">Deploy Amazon RDS for MySQL into a new VPC</a>. This option builds a new AWS environment that consists of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. It then deploys Amazon RDS for MySQL into this new VPC.</p>
+</li>
+<li>
+<p><a href="https://fwd.aws/J3JWJ?">Deploy Amazon RDS for MySQL into an existing VPC</a>. This option provisions Amazon RDS for MySQL in your existing AWS infrastructure.</p>
+</li>
+<li>
+<p><a href="https://fwd.aws/WzdzW?">Deploy Amazon RDS for Microsoft SQL Server into a new VPC</a>. This option builds a new AWS environment that consists of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. It then deploys Amazon RDS for Microsoft SQL into this new VPC.</p>
+</li>
+<li>
+<p><a href="https://fwd.aws/qRJ7y?">Deploy Amazon RDS for Microsoft SQL Server into an existing VPC</a>. This option provisions Amazon RDS for Microsoft SQL in your existing AWS infrastructure.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>This Partner Solution provides separate templates for these options. It also lets you configure Classless Inter-Domain Routing (CIDR) blocks, instance types, and Amazon RDS for PostgreSQL settings.</p>
+<p>This Partner Solution provides separate templates for these options. It also lets you configure Classless Inter-Domain Routing (CIDR) blocks, instance types, and Amazon RDS settings.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_predeployment_steps">Predeployment steps</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Do these steps:</p>
-</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
 <p>Identify an email distribution list to use for notifications.</p>
 </li>
 <li>
-<p>Identify which PostgreSQL versions that your application(s) support, and select the optimal choice.</p>
+<p>Identify the database engine versions that your applications support and select the optimal choice to deploy.</p>
 </li>
 </ol>
 </div>
@@ -1064,7 +1073,7 @@ Unless you&#8217;re customizing the Partner Solution templates or are instructed
 <p>Choose <strong>Create stack</strong>. The stack takes about 30 minutes to deploy.</p>
 </li>
 <li>
-<p>Monitor the stack&#8217;s status, and when the status is <strong>CREATE_COMPLETE</strong>, the Amazon Relational Database Service for PostgreSQL deployment is ready.</p>
+<p>Monitor the stack&#8217;s status, and when the status is <strong>CREATE_COMPLETE</strong>, the Amazon RDS deployment is ready.</p>
 </li>
 <li>
 <p>To view the created resources, choose the <strong>Outputs</strong> tab.</p>
@@ -1083,7 +1092,7 @@ Unless you&#8217;re customizing the Partner Solution templates or are instructed
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This optional test procedure assumes that you have a bastion host with TCP forwarding enabled.
+The following optional test procedure assumes that you have a bastion host with TCP forwarding enabled.
 </td>
 </tr>
 </table>
@@ -1091,7 +1100,7 @@ This optional test procedure assumes that you have a bastion host with TCP forwa
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Download the latest version of <a href="https://www.pgadmin.org/download/">PgAdmin 4</a> and install it on the workstation that will connect to the database cluster.</p>
+<p>Download the latest version of <a href="https://www.pgadmin.org/download/">the database client</a> and install it on the workstation that will connect to the database cluster.</p>
 </li>
 <li>
 <p>From the AWS CloudFormation console, on the <strong>Outputs</strong> tab for <code>BastionStack</code>, note the value for <code>EIP1</code>, as shown in <a href="#outputs1">Figure 2</a>.</p>
@@ -1108,34 +1117,34 @@ This optional test procedure assumes that you have a bastion host with TCP forwa
 <div class="content">
 <img src="docs/deployment_guide/images/outputs2.png" alt="AWS CloudFormation stack RDSStack Outputs tab">
 </div>
-<div class="title">Figure 3. Amazon RDS stack outputs</div>
+<div class="title">Figure 3. {service-short-name} stack outputs</div>
 </div>
 </li>
 <li>
-<p>Launch PgAdmin 4 on your workstation, enter a new password, and choose <strong>OK</strong> to continue.</p>
+<p>Launch {database-client} on your workstation, enter a new password, and choose <strong>OK</strong> to continue.</p>
 <div id="pgadmin1" class="imageblock">
 <div class="content">
-<img src="docs/deployment_guide/images/pgadmin1.png" alt="PgAdmin 4: set password">
+<img src="docs/deployment_guide/images/pgadmin1.png" alt="{database-client}: set password">
 </div>
-<div class="title">Figure 4. Set the password for PgAdmin 4</div>
+<div class="title">Figure 4. Set the password for {database-client}</div>
 </div>
 <div class="paragraph">
-<p>In PgAdmin 4, to create a new server connection, right-click <strong>Servers</strong> to open the context menu, and then choose <strong>Register &gt; Server&#8230;&#8203;</strong>.</p>
+<p>In {database-client}, to create a new server connection, right-click <strong>Servers</strong> to open the context menu, and then choose <strong>Register &gt; Server&#8230;&#8203;</strong>.</p>
 </div>
 <div id="pgadmin2" class="imageblock">
 <div class="content">
-<img src="docs/deployment_guide/images/pgadmin2.png" alt="PgAdmin 4: register server connection">
+<img src="docs/deployment_guide/images/pgadmin2.png" alt="{database-client}: register server connection">
 </div>
-<div class="title">Figure 5. Register a new server connection in PgAdmin 4</div>
+<div class="title">Figure 5. Register a new server connection in {database-client}</div>
 </div>
 </li>
 <li>
 <p>To connect to your database, choose the <strong>General</strong> tab, and provide a descriptive name.</p>
 <div id="pgadmin3" class="imageblock">
 <div class="content">
-<img src="docs/deployment_guide/images/pgadmin3.png" alt="PgAdmin 4: server general settings">
+<img src="docs/deployment_guide/images/pgadmin3.png" alt="{database-client}: server general settings">
 </div>
-<div class="title">Figure 6. General settings for PgAdmin 4 server connection setup</div>
+<div class="title">Figure 6. General settings for {database-client} server connection setup</div>
 </div>
 </li>
 <li>
@@ -1167,9 +1176,9 @@ You can find most of the required values on the <strong>Outputs</strong> tab of 
 <p>In the <strong>Password</strong> field, enter the value of <code>&lt;DBPassword&gt;</code>, which you entered during stack creation.</p>
 <div id="pgadmin4" class="imageblock">
 <div class="content">
-<img src="docs/deployment_guide/images/pgadmin4.png" alt="PgAdmin 4: server connection settings">
+<img src="docs/deployment_guide/images/pgadmin4.png" alt="{database-client}: server connection settings">
 </div>
-<div class="title">Figure 7. Connection settings for the Amazon RDS for PostgreSQL database cluster</div>
+<div class="title">Figure 7. Connection settings for the Amazon RDS database cluster</div>
 </div>
 </li>
 </ol>
@@ -1195,24 +1204,24 @@ You can find most of the required values on the <strong>Outputs</strong> tab of 
 <p>In the <strong>Identity file</strong> field, select your Amazon EC2 key pair private key file, such as <code>keypair.pem</code>.</p>
 <div id="pgadmin5" class="imageblock">
 <div class="content">
-<img src="docs/deployment_guide/images/pgadmin5.png" alt="PgAdmin 4: SSH tunnel settings">
+<img src="docs/deployment_guide/images/pgadmin5.png" alt="{database-client}: SSH tunnel settings">
 </div>
-<div class="title">Figure 8. SSH tunnel settings for the Amazon RDS for PostgreSQL database cluster</div>
+<div class="title">Figure 8. SSH tunnel settings for the Amazon RDS database cluster</div>
 </div>
 </li>
 </ol>
 </div>
 </li>
 <li>
-<p>Choose <strong>Save</strong> to store the connection information and connect to your new Amazon RDS for PostgreSQL instance.</p>
+<p>Choose <strong>Save</strong> to store the connection information and connect to your new Amazon RDS instance.</p>
 <div class="paragraph">
-<p>After connecting successfully, you can access the PgAdmin 4 dashboard, as shown in <a href="#pgadmin6">Figure 9</a>.</p>
+<p>After connecting successfully, you can access the {database-client} dashboard, as shown in <a href="#pgadmin6">Figure 9</a>.</p>
 </div>
 <div id="pgadmin6" class="imageblock">
 <div class="content">
-<img src="docs/deployment_guide/images/pgadmin6.png" alt="PgAdmin 4: dashboard">
+<img src="docs/deployment_guide/images/pgadmin6.png" alt="{database-client}: dashboard">
 </div>
-<div class="title">Figure 9. Confirmation that the Amazon RDS for PostgreSQL database cluster is accepting connections</div>
+<div class="title">Figure 9. Confirmation that the Amazon RDS database cluster is accepting connections</div>
 </div>
 </li>
 </ol>
@@ -1239,21 +1248,21 @@ You can find most of the required values on the <strong>Outputs</strong> tab of 
 <h2 id="_feedback">Feedback</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To submit feature ideas and report bugs, use the <strong>Issues</strong> section of the <a href="https://github.com/aws-quickstart/quickstart-amazon-rds-postgres" target="_blank" rel="noopener">GitHub repository</a> for this Partner Solution. To submit code, refer to the <a href="https://fwd.aws/NwqYA?" target="_blank" rel="noopener">Partner Solution Contributor&#8217;s Guide</a>. To submit feedback on this deployment guide, use the following GitHub links:</p>
+<p>To submit feature ideas and report bugs, use the <strong>Issues</strong> section of the <a href="https://github.com/aws-quickstart/quickstart-amazon-rds" target="_blank" rel="noopener">GitHub repository</a> for this Partner Solution. To submit code, refer to the <a href="https://fwd.aws/NwqYA?" target="_blank" rel="noopener">Partner Solution Contributor&#8217;s Guide</a>. To submit feedback on this deployment guide, use the following GitHub links:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://github.com/aws-quickstart/quickstart-amazon-rds-postgres/issues/new?labels=documentation,grammar+or+spelling&amp;title=Deployment+guide+feedback&amp;body=Section+heading:%0ADocumentation+issue+description:%0A" target="_blank" rel="noopener">Grammar or spelling</a></p>
+<p><a href="https://github.com/aws-quickstart/quickstart-amazon-rds/issues/new?labels=documentation,grammar+or+spelling&amp;title=Deployment+guide+feedback&amp;body=Section+heading:%0ADocumentation+issue+description:%0A" target="_blank" rel="noopener">Grammar or spelling</a></p>
 </li>
 <li>
-<p><a href="https://github.com/aws-quickstart/quickstart-amazon-rds-postgres/issues/new?labels=documentation,broken+link&amp;title=Deployment+guide+feedback&amp;body=Section+heading:%0ADocumentation+issue+description:%0A" target="_blank" rel="noopener">Broken link</a></p>
+<p><a href="https://github.com/aws-quickstart/quickstart-amazon-rds/issues/new?labels=documentation,broken+link&amp;title=Deployment+guide+feedback&amp;body=Section+heading:%0ADocumentation+issue+description:%0A" target="_blank" rel="noopener">Broken link</a></p>
 </li>
 <li>
-<p><a href="https://github.com/aws-quickstart/quickstart-amazon-rds-postgres/issues/new?labels=documentation,inaccurate+content&amp;title=Deployment+guide+feedback&amp;body=Section+heading:%0ADocumentation+issue+description:%0A" target="_blank" rel="noopener">Inaccurate content</a></p>
+<p><a href="https://github.com/aws-quickstart/quickstart-amazon-rds/issues/new?labels=documentation,inaccurate+content&amp;title=Deployment+guide+feedback&amp;body=Section+heading:%0ADocumentation+issue+description:%0A" target="_blank" rel="noopener">Inaccurate content</a></p>
 </li>
 <li>
-<p><a href="https://github.com/aws-quickstart/quickstart-amazon-rds-postgres/issues/new?labels=documentation,display+and+design&amp;title=Deployment+guide+feedback&amp;body=Section+heading:%0ADocumentation+issue+description:%0A" target="_blank" rel="noopener">Display or design</a></p>
+<p><a href="https://github.com/aws-quickstart/quickstart-amazon-rds/issues/new?labels=documentation,display+and+design&amp;title=Deployment+guide+feedback&amp;body=Section+heading:%0ADocumentation+issue+description:%0A" target="_blank" rel="noopener">Display or design</a></p>
 </li>
 </ul>
 </div>
@@ -1276,7 +1285,7 @@ You can find most of the required values on the <strong>Outputs</strong> tab of 
         <!-- We can use document attributes: -->
         <!-- Generated with Asciidoctor v2.0.17. -->
         <a href="https://aws.amazon.com/privacy/">Privacy</a> | <a href="https://aws.amazon.com/terms/">Site terms</a> |
-        &copy; 2022, Amazon Web Services, Inc. or its affiliates. All rights reserved.
+        &copy; 2023, Amazon Web Services, Inc. or its affiliates. All rights reserved.
     </p>
 </footer>
 </body>
